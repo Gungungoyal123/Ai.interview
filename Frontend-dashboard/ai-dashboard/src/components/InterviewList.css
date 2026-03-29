@@ -1,0 +1,53 @@
+/* ===== INTERVIEW LIST ===== */
+.interview-list-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 8px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.interview-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f4f8;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.interview-row:last-child {
+  border-bottom: none;
+}
+
+.interview-row:hover {
+  background: #f7faff;
+}
+
+.interview-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.interview-label {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e2d4a;
+}
+
+.interview-score {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.interview-arrow {
+  font-size: 18px;
+  color: #aaa;
+}

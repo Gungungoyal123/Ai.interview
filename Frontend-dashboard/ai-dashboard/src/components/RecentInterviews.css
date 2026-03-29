@@ -1,0 +1,62 @@
+/* ===== RECENT INTERVIEWS ===== */
+.recent-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  flex: 1;
+}
+
+.recent-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e2d4a;
+  margin-bottom: 16px;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f7faff;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.recent-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e2d4a;
+  margin-bottom: 4px;
+}
+
+.recent-sub {
+  font-size: 12px;
+  color: #7a8a9a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recent-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.recent-score {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  min-width: 60px;
+  text-align: center;
+}
