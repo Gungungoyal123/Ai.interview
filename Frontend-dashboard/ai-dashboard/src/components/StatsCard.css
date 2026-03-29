@@ -1,0 +1,33 @@
+/* ===== STATS CARD ===== */
+.stats-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.stats-icon {
+  font-size: 32px;
+  background: #eef3ff;
+  border-radius: 12px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-label {
+  font-size: 13px;
+  color: #7a8a9a;
+  margin-bottom: 4px;
+}
+
+.stats-value {
+  font-size: 28px;
+  font-weight: 700;
+}
