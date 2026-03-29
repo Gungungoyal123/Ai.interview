@@ -2,9 +2,11 @@ import User from "../models/usermodel.js";
 
 export const signup=async(req,res)=>{
     try {
+        console.log("Headers:", req.headers['content-type']);
+    console.log("Body:", req.body);
        const {email,password}=req.body;
        if(!email || !password){
-         return res.status(400).json({success:false,message:"Incomplete info"});
+         return res.status(400).json({success:false,message:"Incomplete infokkkkkkkk"});
        } 
        const user=await User.findOne({email});
        if(user){

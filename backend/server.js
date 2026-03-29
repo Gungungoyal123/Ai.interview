@@ -7,8 +7,8 @@ connectdb();
 const app=express();
 app.use(express.json());
 
-
-app.listen(process.env.PORT,()=>{
+const PORT=process.env.PORT||5000;
+app.listen(PORT,()=>{
     console.log("server is listenign ");
 })
 app.use('/api/users',userRouter);
