@@ -1,8 +1,70 @@
 import { useState } from "react";
-
+import {useNavigate} from 'react-router-dom';
+import { useEffect } from "react";
 function FirstPage() {
+  const navigate=useNavigate();
   const [isLogin, setIsLogin] = useState(true);
-
+  const [email,setemail]=useState("");
+  const [password,setpassword]=useState("");
+  const handlemail=(e)=>{
+     setemail(e.target.value);
+  }
+  const handlepassword=(e)=>{
+    setpassword(e.target.value);
+  }
+  const handlelogin=async (e)=>{
+      e.preventDefault();
+      const logindata={
+        email:email,
+        password:password
+      };
+     try {
+       const response=await fetch("http://localhost:8000/user/login",{
+          method:'POST',
+          headers:{
+            'content-type':'application/json',
+          },
+          body:JSON.stringify(logindata),
+       });
+       const data=await response.json();
+       if(response.ok){
+        localStorage.setItem("mytoken",data.token);
+        console.log("login succeessfull");
+        navigate("/dashboard");
+       } 
+       else{
+          console.log("unsuccessful login");
+       }
+     } catch (error) {
+        console.log(error);
+     }
+  }
+  const handlesignup=async(e)=>{
+    e.preventDefault();
+    const signupinfo={
+      email:email,
+      password:password
+    }
+    try {
+      const response=await fetch("http://localhost:8000/user/signup",{
+           method:'POST',
+           headers:{
+           'content-type':'application/json',
+            },
+            body:JSON.stringify(signupinfo),
+      });
+      const data= await response.json();
+      if(response.ok){
+        console.log("successfull singup");
+      }
+      else{
+        console.log("unsuccessfull signup");
+      }
+     
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div style={styles.container}>
       
@@ -16,15 +78,14 @@ function FirstPage() {
       <div style={styles.right}>
         <div style={styles.card}>
           <h2>{isLogin ? "Login" : "Sign Up"}</h2>
-
-          <input placeholder="Email" style={styles.input} />
-          <input placeholder="Password" type="password" style={styles.input} />
+          <input placeholder="Email" onChange={handlemail} style={styles.input} />
+          <input placeholder="Password" onChange={handlepassword} type="password" style={styles.input} />
 
           {!isLogin && (
             <input placeholder="Confirm Password" style={styles.input} />
           )}
 
-          <button style={styles.button}>
+          <button style={styles.button} onClick={isLogin?handlelogin:handlesignup}>
             {isLogin ? "Login" : "Sign Up"}
           </button>
 
