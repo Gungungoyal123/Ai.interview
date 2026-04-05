@@ -1,0 +1,154 @@
+/* Loading */
+.is-loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+}
+
+.is-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ede9ff;
+  border-top-color: #6c63ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.is-loading-wrap p {
+  color: #888;
+  font-size: 0.95rem;
+}
+
+/* Screen */
+.is-screen {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.is-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.is-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.is-end-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.is-end-btn:hover { background: #e03c3c; }
+
+/* Progress */
+.is-progress-track {
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 8px;
+  margin-bottom: 8px;
+}
+
+.is-progress-fill {
+  background: #6c63ff;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+.is-progress-text {
+  text-align: right;
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 32px;
+}
+
+/* Card */
+.is-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 32px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.is-type-badge {
+  background: #ede9ff;
+  color: #6c63ff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.is-question {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: #1a1a2e;
+}
+
+/* Nav Buttons */
+.is-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.is-btn {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.is-btn-prev {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.is-btn-prev:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.is-btn-next {
+  background: #6c63ff;
+  color: white;
+}
+
+.is-btn-next:hover { background: #5a52e0; }
+
+.is-btn-finish {
+  background: #1ec99b;
+  color: white;
+}
+
+.is-btn-finish:hover { background: #18b088; }

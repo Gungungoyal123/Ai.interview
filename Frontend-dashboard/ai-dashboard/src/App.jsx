@@ -34,7 +34,7 @@ import './App.css'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import FirstPage from './components/Firstpage'
-import PerformanceChart from './components/PerformanceChart'
+import Dashboard from './Pages/Dashboard';
 // Note the "BrowserRouter as Router" change here
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -50,9 +50,10 @@ function App() {
           <Routes>
             {/* When URL is http://localhost:5173/ */}
             <Route path="/" element={<FirstPage />} />
-
+             
             {/* When URL is http://localhost:5173/dashboard */}
-            <Route path="/dashboard" element={<PerformanceChart />} />
+            <Route path="/dashboard" element={<Dashboard/>} />
+
           </Routes>
 
         </div>
