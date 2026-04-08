@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {useNavigate} from 'react-router-dom';
-import { useEffect } from "react";
+// import { useEffect } from "react";
 function FirstPage() {
   const navigate=useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +53,7 @@ function FirstPage() {
             },
             body:JSON.stringify(signupinfo),
       });
-      const data= await response.json();
+      // const data= await response.json();
       if(response.ok){
         console.log("successfull singup");
       }
