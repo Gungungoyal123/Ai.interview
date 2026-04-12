@@ -17,10 +17,6 @@ function InterviewSession({ onEnd, formData, userId  }) {
     setIsLoading(true);
     try {
       const res = await axios.post('http://localhost:8000/api/interview/generate', {
-        // role: "Frontend Developer",
-        // experience: "2",
-        // techStack: "React, JavaScript"
-         
         ...formData,   // ✅ all fields from form
         userId         // ✅ important
       

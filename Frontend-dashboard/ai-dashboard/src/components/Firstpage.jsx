@@ -36,7 +36,7 @@ function FirstPage() {
         setIsError(false);
 
 
-        navigate("/");
+        navigate("/dashboard");
       } else {
         console.log("login failed!");
         setMessage(data.message);
