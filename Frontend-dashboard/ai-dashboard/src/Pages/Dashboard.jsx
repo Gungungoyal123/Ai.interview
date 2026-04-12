@@ -6,43 +6,37 @@ import RecentInterviews from '../components/RecentInterviews'
 import InterviewSession from '../components/InterviewSession'
 // import axios from 'axios';
 import { useState } from 'react';
+import UserForm from '../components/UserForm'
 function Dashboard() {
 
-  //  const [questions, setQuestions] = useState([]);
-  //  const handleStartInterview = async () => {
-  //   console.log("Starting interview... calling OpenAI");
-
-  //   try {
-  //     const res = await axios.post('http://localhost:8000/api/interview/generate', {
-  //       role: "Frontend Developer",       // hardcoded for now
-  //       experience: "2",                  // hardcoded for now
-  //       techStack: "React, JavaScript"    // hardcoded for now
-  //     });
-
-  //     setQuestions(res.data.questions);
-  //     console.log("✅ Questions received:", res.data.questions); // check browser console
-
-  //   } catch (err) {
-  //     console.error("❌ Error generating questions:", err);
-  //   }
-  // };
+ 
    const [isInterviewActive, setIsInterviewActive] = useState(false);
+  //  const [questions, setQuestions] = useState([]);
 
-  // ── Interview is active → show InterviewSession ──
-  if (isInterviewActive) {
-    return (
-      <InterviewSession onEnd={() => setIsInterviewActive(false)} userId="69d227a8a737d2ffd066bc89"
-  formData={{
-    role: "Frontend Developer",
-    experience: "2",
-    techStack: "React, JavaScript",
-    difficulty: "Medium",
-    companyType: "Product-based",
-    interviewType: "Technical"
-  }}/>
-    );
-  }
+const [formData, setFormData] = useState(null);
 
+if (isInterviewActive && !formData) {
+  return (
+    <UserForm
+      onStart={(data) => {
+        setFormData(data); // save form data
+      }}
+    />
+  );
+}
+
+if (formData) {
+  return (
+    <InterviewSession
+      formData={formData}
+      userId={"69d227a8a737d2ffd066bc89"} // need to get from database
+      onEnd={() => {
+        setFormData(null);
+        setIsInterviewActive(false);
+      }}
+    />
+  );
+}
   
   return (
     <div className="dashboard">

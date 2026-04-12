@@ -36,7 +36,7 @@ function FirstPage() {
         setIsError(false);
 
 
-        navigate("/");
+        navigate("/dashboard");
       } else {
         console.log("login failed!");
         setMessage(data.message);
@@ -60,17 +60,11 @@ function FirstPage() {
         },
         body: JSON.stringify(signupinfo),
       });
-      const data = await response?.json();
-      if (response.ok) {
-        setMessage(data.message); // success message
-         setTimeout(() => {
-        navigate('/user/login');
-      }, 1500);  
-        setIsError(false);
-        setemail("");
-        setpassword("");
-        console.log("successfull singup", data);
-      } else {
+      const data= await response.json();
+      if(response.ok){
+        console.log("successfull singup");
+      }
+      else{
         console.log("unsuccessfull signup");
         setMessage(data.message);
         setIsError(true);
