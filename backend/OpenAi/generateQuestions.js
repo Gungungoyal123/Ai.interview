@@ -50,21 +50,39 @@ export const generateQuestions = async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `Generate 10 interview questions for:
-Role: ${role || "software Engineer"}
-Experience: ${experience || "1"} years 
-Technologies: ${techStack || "JS"}
-Difficulty: ${difficulty || "Medium"}
-Company Type: ${companyType || "Product-based"}
-Interview Type: ${interviewType || "Technical"}
+         content: `You are a senior technical interviewer at a ${companyType || "Product-based"} company.
 
+Your task is to generate 10 realistic interview questions for the following candidate profile:
 
-Rules:
+CANDIDATE PROFILE:
+- Role: ${role || "Software Engineer"}
+- Experience: ${experience || "1"} years
+- Tech Stack: ${techStack || "JavaScript"}
+- Difficulty Level: ${difficulty || "Medium"}
+- Interview Type: ${interviewType || "Technical"}
+- Company Type: ${companyType || "Product-based"}
+
+INSTRUCTIONS:
+- Generate questions exactly as a real interviewer would ask them in a live interview
+- Questions must be specific to the candidate's tech stack — do NOT generate generic questions
+- Match difficulty: ${difficulty === "Easy" ? "Focus on fundamentals and basic concepts" : difficulty === "Hard" ? "Focus on deep system design, optimization, and edge cases" : "Mix of conceptual and practical questions"}
+- For ${interviewType === "Technical" ? "technical interviews: include coding logic, debugging, and architecture questions" : interviewType === "HR" ? "HR interviews: include behavioral, situational, and culture-fit questions" : "system design: include scalability, database design, and architecture questions"}
+- For ${companyType === "Startup" ? "startups: focus on problem-solving speed, versatility, and ownership mindset" : companyType === "Product-based" ? "product companies: focus on DSA, system design, and deep technical concepts" : "service companies: focus on project experience, communication, and client scenarios"}
+- Make questions progressively harder (first 3 basic, next 4 intermediate, last 3 advanced)
+- Each question should feel like it came from a real ${experience > 3 ? "senior-level" : "fresher/junior-level"} interview
+
+QUESTION DISTRIBUTION:
+- 3 questions: type "Basic" — foundational concepts
+- 4 questions: type "Intermediate" — applied knowledge  
+- 3 questions: type "Advanced" — deep expertise / real-world scenarios
+
+STRICT OUTPUT RULES:
 - Return ONLY a valid JSON array
-- No markdown, no backticks, no explanation  
+- No markdown, no backticks, no explanation
+- No numbering before questions
 - Start directly with [ and end with ]
 
-Format exactly like this:
+FORMAT:
 [
   { "type": "Basic", "question": "your question here" },
   { "type": "Intermediate", "question": "your question here" },
@@ -72,6 +90,7 @@ Format exactly like this:
 ]`,
         },
       ],
+       max_tokens: 2048, 
       temperature: 0.7,
     });
 
