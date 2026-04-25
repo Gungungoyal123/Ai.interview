@@ -20,7 +20,12 @@ export const login=async(req,res)=>{
            process.env.JWT_SECRET_KEY,
            {expiresIn:'30d'},
         );
-        return res.status(201).json({success:true,message:"successfully login",token:token});
+        return res.status(201).json({
+  success: true,
+  message: "successfully login",
+  token: token,
+  userId: user._id  // ✅ add this
+});
    } catch (error) {
     return res.status(500).json({success:true,error:error.message});
    }
