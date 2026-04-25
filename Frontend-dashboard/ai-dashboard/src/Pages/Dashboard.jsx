@@ -9,43 +9,48 @@ import UserForm from '../components/UserForm'
 
 function Dashboard() {
   const [isInterviewActive, setIsInterviewActive] = useState(false);
-  const [sessionId, setSessionId] = useState(null);
-  const [firstQuestion, setFirstQuestion] = useState(null);
+  const [sessionData, setSessionData] = useState(null);
 
-  // show UserForm
-  if (isInterviewActive && !sessionId) {
+  const userId = localStorage.getItem("userId");
+
+  // 🟢 Show User Form
+  if (isInterviewActive && !sessionData) {
     return (
       <UserForm
         onStart={(data) => {
-          setSessionId(data.sessionId);        // ✅ store sessionId
-          setFirstQuestion(data.firstQuestion); // ✅ store firstQuestion
+          setSessionData(data); // ✅ store everything
         }}
       />
     );
   }
 
-  // show InterviewSession
-  if (sessionId && firstQuestion) {
+  // 🟢 Show Interview Screen
+  if (sessionData) {
     return (
       <InterviewSession
-        sessionId={sessionId}
-        firstQuestion={firstQuestion}
+        sessionId={sessionData.sessionId}
+        firstQuestion={sessionData.firstQuestion}
+        formData={sessionData.formData}
+        userId={userId}
         onEnd={() => {
-          setSessionId(null);
-          setFirstQuestion(null);
+          setSessionData(null);
           setIsInterviewActive(false);
         }}
       />
     );
   }
 
+  // 🟢 Default Dashboard
   return (
     <div className="dashboard">
 
       {/* Welcome Row */}
       <div className="welcome-row">
         <h1 className="welcome-text">Welcome back 👋</h1>
-        <button className="start-btn" onClick={() => setIsInterviewActive(true)}>
+        <button
+          className="start-btn"
+          onClick={() => setIsInterviewActive(true)}
+        >
           Start Interview ›
         </button>
       </div>
