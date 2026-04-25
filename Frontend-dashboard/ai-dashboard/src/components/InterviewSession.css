@@ -127,6 +127,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+   background: #6c63ff;
+  color: white;
 }
 
 .is-btn-prev {
@@ -149,6 +151,94 @@
 .is-btn-finish {
   background: #1ec99b;
   color: white;
+  width: 100px;
+    height: 30px;
+    border-radius: 4px;
+    border-color: transparent;
 }
 
 .is-btn-finish:hover { background: #18b088; }
+
+/* Feedback Container */
+.feedback-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.feedback-card {
+  width: 600px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.feedback-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Score Boxes */
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.score-box {
+  flex: 1;
+  margin: 5px;
+  padding: 15px;
+  background: linear-gradient(135deg, #6a5af9, #836fff);
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Sections */
+.feedback-section {
+  margin-top: 20px;
+}
+
+.feedback-section ul {
+  padding-left: 20px;
+}
+
+/* Verdict */
+.verdict-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+/* Button */
+.back-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #6a5af9;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #5746d6;
+}
+.mic-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ff6b6b;
+  color: white;
+  cursor: pointer;
+}
+
+.mic-btn:hover {
+  background: #ff4c4c;
+}
