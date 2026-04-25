@@ -21,7 +21,7 @@ export  const chat=async(req,res)=>{
   messages: session.conversationHistory.map(msg => ({
     role: msg.role,
     content: msg.content
-  })), // ✅ strips _id
+  })), 
   temperature: 0.7,
 });
         const interviewanswer=response.choices[0].message.content;
