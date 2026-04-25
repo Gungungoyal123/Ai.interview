@@ -1,78 +1,86 @@
 import './Dashboard.css'
 import StatsCard from '../components/StatsCard'
-import PerformanceChart from '../components/PerformanceChart'
-import InterviewList from '../components/InterviewList'
 import RecentInterviews from '../components/RecentInterviews'
 import InterviewSession from '../components/InterviewSession'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserForm from '../components/UserForm'
 
 function Dashboard() {
   const [isInterviewActive, setIsInterviewActive] = useState(false);
   const [sessionData, setSessionData] = useState(null);
-
+  const [username, setUsername] = useState("");
+  const [feedbacks, setFeedbacks] = useState([]);
   const userId = localStorage.getItem("userId");
 
-  // 🟢 Show User Form
+  useEffect(() => {
+    fetchUsername();
+    fetchFeedbacks();
+  }, []);
+
+  const fetchUsername = async () => {
+    try {
+      const token = localStorage.getItem("mytoken");
+      const res = await fetch("http://localhost:8000/user/profile", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) setUsername(data.name || "User");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchFeedbacks = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/user/api/feedbacks/${userId}`); // ✅ fixed
+      const data = await res.json();
+      if (res.ok) setFeedbacks(data.feedbacks);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const avgScore = feedbacks.length > 0
+    ? Math.round(feedbacks.reduce((sum, f) => sum + f.overallScore, 0) / feedbacks.length)
+    : 0;
+
   if (isInterviewActive && !sessionData) {
-    return (
-      <UserForm
-        onStart={(data) => {
-          setSessionData(data); // ✅ store everything
-        }}
-      />
-    );
+    return <UserForm onStart={(data) => setSessionData(data)} />;
   }
 
-  // 🟢 Show Interview Screen
   if (sessionData) {
     return (
       <InterviewSession
         sessionId={sessionData.sessionId}
         firstQuestion={sessionData.firstQuestion}
-        formData={sessionData.formData}
-        userId={userId}
         onEnd={() => {
           setSessionData(null);
           setIsInterviewActive(false);
+          fetchFeedbacks();
         }}
       />
     );
   }
 
-  // 🟢 Default Dashboard
   return (
     <div className="dashboard">
-
-      {/* Welcome Row */}
       <div className="welcome-row">
-        <h1 className="welcome-text">Welcome back 👋</h1>
-        <button
-          className="start-btn"
-          onClick={() => setIsInterviewActive(true)}
-        >
-          Start Interview ›
+        <div>
+          <h1 className="welcome-text">Welcome back, {username} 👋</h1>
+          <p className="welcome-sub">Ready for your next interview practice?</p>
+        </div>
+        <button className="start-btn" onClick={() => setIsInterviewActive(true)}>
+          + Start Interview
         </button>
       </div>
 
-      {/* Stats Row */}
       <div className="stats-row">
-        <StatsCard icon="✅" label="Total Interviews" value="12" />
-        <StatsCard icon="⭐" label="Average Score" value="78%" valueColor="#1ec99b" />
-        <StatsCard icon="😊" label="Confidence Level" value="Good" />
+        <StatsCard icon="🎯" label="Total Interviews" value={feedbacks.length || 0} />
+        <StatsCard icon="⭐" label="Average Score" value={`${avgScore}%`} valueColor="#1ec99b" />
+        <StatsCard icon="🏆" label="Last Verdict" value={feedbacks[0]?.verdict || "N/A"} />
       </div>
 
-      {/* Bottom Section */}
-      <div className="bottom-row">
-        <div className="left-col">
-          <PerformanceChart />
-          <InterviewList />
-        </div>
-        <div className="right-col">
-          <RecentInterviews />
-        </div>
-      </div>
-
+      <RecentInterviews feedbacks={feedbacks} />
     </div>
   );
 }

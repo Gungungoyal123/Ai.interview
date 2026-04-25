@@ -1,4 +1,3 @@
-/* ===== HEADER ===== */
 .header {
   background: #ffffff;
   border-radius: 16px;
@@ -7,43 +6,14 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 4px;
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.hamburger {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #555;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #f5f7fb;
-  border-radius: 30px;
-  padding: 8px 16px;
-  width: 260px;
-}
-
-.search-icon {
-  font-size: 14px;
-}
-
-.search-input {
-  border: none;
-  background: none;
-  outline: none;
-  font-size: 14px;
-  color: #333;
-  width: 100%;
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e2d4a;
+  margin: 0;
 }
 
 .header-right {
@@ -52,18 +22,25 @@
   gap: 12px;
 }
 
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
+.logout-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #e05252;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  padding: 4px;
+}
+
+.logout-btn:hover {
+  background: #fff0f0;
 }
 
 .avatar {
   width: 36px;
   height: 36px;
-  background: #d0ddef;
+  background: #eef3ff;
   border-radius: 50%;
   display: flex;
   align-items: center;

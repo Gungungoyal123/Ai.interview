@@ -1,10 +1,8 @@
-/* ===== RECENT INTERVIEWS ===== */
 .recent-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 20px 20px;
+  padding: 20px 24px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  flex: 1;
 }
 
 .recent-title {
@@ -17,7 +15,7 @@
 .recent-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .recent-row {
@@ -26,14 +24,21 @@
   justify-content: space-between;
   background: #f7faff;
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 12px 16px;
+}
+
+.recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .recent-label {
   font-size: 14px;
   font-weight: 600;
   color: #1e2d4a;
-  margin-bottom: 4px;
+  margin: 0;
+  text-transform: capitalize;
 }
 
 .recent-sub {
@@ -42,6 +47,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  margin: 0;
 }
 
 .recent-dot {
@@ -49,14 +55,24 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .recent-score {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   padding: 6px 14px;
   border-radius: 8px;
-  min-width: 60px;
+  min-width: 55px;
   text-align: center;
+  flex-shrink: 0;
+}
+
+.recent-empty {
+  text-align: center;
+  padding: 30px;
+  color: #7a8a9a;
+  font-size: 14px;
+  line-height: 2;
 }

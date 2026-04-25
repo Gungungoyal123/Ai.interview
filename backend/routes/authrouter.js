@@ -4,6 +4,8 @@ import { signup } from "../controllers/signup.js";
 import { startinterview } from "../interview/startinterview.js";
 import { generateFeedback } from "../interview/feedback.js";
 import { chat } from "../interview/chat.js";
+import { getFeedbacks } from "../interview/getfeedback.js";
+
 
 export const userRouter=Router();
 console.log("Auth router working");
@@ -12,5 +14,4 @@ userRouter.route('/login').post(login);
 userRouter.route('/api/startinterview').post(startinterview);
 userRouter.route('/api/feedback').post(generateFeedback);
 userRouter.route('/api/chat').post(chat);
-
-
+userRouter.route('/api/feedbacks/:userId').get(getFeedbacks);

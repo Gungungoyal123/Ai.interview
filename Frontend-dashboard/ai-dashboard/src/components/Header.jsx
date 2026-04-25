@@ -1,22 +1,22 @@
 import './Header.css'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("mytoken");
+    localStorage.removeItem("userId");
+    navigate("/");
+  };
+
   return (
     <header className="header">
-      {/* Hamburger + Search */}
       <div className="header-left">
-        <button className="hamburger">☰</button>
-        <div className="search-bar">
-          <span className="search-icon">🔍</span>
-          <input type="text" placeholder="Search..." className="search-input" />
-        </div>
+        <h2 className="header-title">AI Interview Prep</h2>
       </div>
-
-      {/* Icons + Avatar */}
       <div className="header-right">
-        <button className="icon-btn">✉️</button>
-        <button className="icon-btn">🔔</button>
-        <button className="icon-btn">⚙️</button>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
         <div className="avatar">👤</div>
       </div>
     </header>
