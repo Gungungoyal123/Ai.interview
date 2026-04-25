@@ -4,49 +4,50 @@ import PerformanceChart from '../components/PerformanceChart'
 import InterviewList from '../components/InterviewList'
 import RecentInterviews from '../components/RecentInterviews'
 import InterviewSession from '../components/InterviewSession'
-// import axios from 'axios';
 import { useState } from 'react';
 import UserForm from '../components/UserForm'
+
 function Dashboard() {
+  const [isInterviewActive, setIsInterviewActive] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [firstQuestion, setFirstQuestion] = useState(null);
 
- 
-   const [isInterviewActive, setIsInterviewActive] = useState(false);
-  //  const [questions, setQuestions] = useState([]);
+  // show UserForm
+  if (isInterviewActive && !sessionId) {
+    return (
+      <UserForm
+        onStart={(data) => {
+          setSessionId(data.sessionId);        // ✅ store sessionId
+          setFirstQuestion(data.firstQuestion); // ✅ store firstQuestion
+        }}
+      />
+    );
+  }
 
-const [formData, setFormData] = useState(null);
+  // show InterviewSession
+  if (sessionId && firstQuestion) {
+    return (
+      <InterviewSession
+        sessionId={sessionId}
+        firstQuestion={firstQuestion}
+        onEnd={() => {
+          setSessionId(null);
+          setFirstQuestion(null);
+          setIsInterviewActive(false);
+        }}
+      />
+    );
+  }
 
-if (isInterviewActive && !formData) {
-  return (
-    <UserForm
-      onStart={(data) => {
-        setFormData(data); // save form data
-      }}
-    />
-  );
-}
-
-if (formData) {
-  return (
-    <InterviewSession
-      formData={formData}
-      userId={"69d227a8a737d2ffd066bc89"} // need to get from database
-      onEnd={() => {
-        setFormData(null);
-        setIsInterviewActive(false);
-      }}
-    />
-  );
-}
-  
   return (
     <div className="dashboard">
 
       {/* Welcome Row */}
       <div className="welcome-row">
-        <h1 className="welcome-text">Welcome back, Sonam 👋</h1>
-        <button className="start-btn" 
-        onClick={() => setIsInterviewActive(true)}  
-        >Start Interview ›</button>
+        <h1 className="welcome-text">Welcome back 👋</h1>
+        <button className="start-btn" onClick={() => setIsInterviewActive(true)}>
+          Start Interview ›
+        </button>
       </div>
 
       {/* Stats Row */}
@@ -56,23 +57,19 @@ if (formData) {
         <StatsCard icon="😊" label="Confidence Level" value="Good" />
       </div>
 
-      {/* Bottom Section: Chart+List  |  Recent */}
+      {/* Bottom Section */}
       <div className="bottom-row">
-
-        {/* Left column */}
         <div className="left-col">
           <PerformanceChart />
           <InterviewList />
         </div>
-
-        {/* Right column */}
         <div className="right-col">
           <RecentInterviews />
         </div>
-
       </div>
+
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

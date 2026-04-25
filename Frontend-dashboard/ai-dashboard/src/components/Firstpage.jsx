@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useEffect } from "react";
+
 function FirstPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -8,12 +8,15 @@ function FirstPage() {
   const [password, setpassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+
   const handlemail = (e) => {
     setemail(e.target.value);
   };
+
   const handlepassword = (e) => {
     setpassword(e.target.value);
   };
+
   const handlelogin = async (e) => {
     e.preventDefault();
     const logindata = {
@@ -31,11 +34,10 @@ function FirstPage() {
       const data = await response?.json();
       if (response.ok) {
         localStorage.setItem("mytoken", data.token);
-        console.log("login succeessfull");
+        localStorage.setItem("userId", data.userId); // ✅ save userId
+        console.log("login successful");
         setMessage("Login successful");
         setIsError(false);
-
-
         navigate("/dashboard");
       } else {
         console.log("login failed!");
@@ -46,6 +48,7 @@ function FirstPage() {
       console.log(error);
     }
   };
+
   const handlesignup = async (e) => {
     e.preventDefault();
     const signupinfo = {
@@ -60,12 +63,14 @@ function FirstPage() {
         },
         body: JSON.stringify(signupinfo),
       });
-      const data= await response.json();
-      if(response.ok){
-        console.log("successfull singup");
-      }
-      else{
-        console.log("unsuccessfull signup");
+      const data = await response.json();
+      if (response.ok) {
+        console.log("successful signup");
+        setMessage("Signup successful! Please login."); // ✅ show success message
+        setIsError(false);
+        setIsLogin(true); // ✅ auto switch to login
+      } else {
+        console.log("unsuccessful signup");
         setMessage(data.message);
         setIsError(true);
       }
@@ -75,15 +80,16 @@ function FirstPage() {
       setIsError(true);
     }
   };
+
   return (
     <div style={styles.container}>
-      {/* LEFT SIDE (WELCOME) */}
+      {/* LEFT SIDE */}
       <div style={styles.left}>
         <h1>Welcome to IntervAI 🚀</h1>
         <p>Practice interviews smarter and boost your confidence.</p>
       </div>
 
-      {/* RIGHT SIDE (FORM) */}
+      {/* RIGHT SIDE */}
       <div style={styles.right}>
         <div style={styles.card}>
           <h2>{isLogin ? "Login" : "Sign Up"}</h2>
@@ -109,13 +115,9 @@ function FirstPage() {
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
+
           {message && (
-            <p
-              style={{
-                color: isError ? "red" : "green",
-                marginTop: "10px",
-              }}
-            >
+            <p style={{ color: isError ? "red" : "green", marginTop: "10px" }}>
               {message}
             </p>
           )}
