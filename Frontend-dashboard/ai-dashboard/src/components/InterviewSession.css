@@ -119,7 +119,7 @@
 }
 
 .is-btn {
-  flex: 1;
+  
   padding: 12px 24px;
   border-radius: 10px;
   border: none;
@@ -241,4 +241,75 @@
 
 .mic-btn:hover {
   background: #ff4c4c;
+}
+/* Progress Section */
+.progress-section {
+  margin-bottom: 20px;
+}
+
+.question-count-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.question-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.question-label strong {
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.questions-remaining {
+  font-size: 13px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* Progress Bar */
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6c63ff;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+/* Dot Row */
+.dot-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  transition: all 0.3s;
+}
+
+.dot-done {
+  background: #6c63ff;
+}
+
+.dot-current {
+  background: #1a1a2e;
+  width: 20px;
+  border-radius: 4px;
 }
