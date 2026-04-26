@@ -39,7 +39,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
   const handleSubmitAnswer = async () => {
     if (!userAnswer || !isInterviewActive) return;
     try {
-      const res = await axios.post("http://localhost:8000/user/api/chat", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
         sessionid: sessionId,
         useranswer: userAnswer
       });
@@ -79,7 +79,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
     setIsInterviewActive(false);
     try {
       setIsLoading(true);
-      const res = await axios.post("http://localhost:8000/user/api/feedback", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/feedback`, {
         sessionId: sessionId,
         voiceAnalysis: {
           avgConfidence: 75,
