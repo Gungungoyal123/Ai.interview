@@ -125,7 +125,7 @@ function UserForm({ onStart }) {
     try {
       const userId = localStorage.getItem("userId"); // ✅ get userId from localStorage
 
-      const res = await axios.post("http://localhost:8000/user/api/startinterview", {
+     const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/startinterview`, {
         ...formData,
         userId
       });
