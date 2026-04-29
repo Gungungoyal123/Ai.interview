@@ -1,0 +1,55 @@
+/* ── MOBILE RESPONSIVE ───────────────────────────── */
+/* Note: inline styles have higher specificity,       */
+/* so we override layout-level properties only        */
+
+@media (max-width: 768px) {
+
+  /* Target the root flex container */
+  div[style*="height: 100vh"] {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  /* Left panel — gradient side */
+  div[style*="linear-gradient(135deg, #4f46e5"] {
+    flex: none !important;
+    padding: 28px 20px !important;
+    text-align: center;
+  }
+
+  div[style*="linear-gradient(135deg, #4f46e5"] h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  div[style*="linear-gradient(135deg, #4f46e5"] p {
+    font-size: 13px;
+  }
+
+  /* Right panel — form side */
+  div[style*="background: rgb(245, 245, 245)"],
+  div[style*='background: "#f5f5f5"'] {
+    flex: 1 !important;
+    padding: 24px 16px !important;
+    align-items: flex-start !important;
+  }
+
+  /* Card */
+  div[style*="width: 300px"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 24px 16px !important;
+  }
+}
+
+@media (max-width: 375px) {
+  div[style*="linear-gradient(135deg, #4f46e5"] h1 {
+    font-size: 18px;
+  }
+
+  div[style*="width: 300px"] {
+    padding: 20px 12px !important;
+  }
+}

@@ -46,3 +46,32 @@
   display: flex;
   gap: 16px;
 }
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 12px 12px 80px;  /* 80px bottom = space for fixed sidebar */
+    gap: 14px;
+  }
+
+  .welcome-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .welcome-text {
+    font-size: 18px;
+  }
+
+  .start-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .stats-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

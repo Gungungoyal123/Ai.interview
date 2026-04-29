@@ -1,31 +1,66 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as React from "react";
 import './InterviewSession.css';
-
 function InterviewSession({ onEnd, sessionId, firstQuestion }) {
-  const [isListening, setIsListening] = useState(false);
+   const [isListening, setIsListening] = useState(false);
   const [isInterviewActive, setIsInterviewActive] = useState(true);
   const [feedback, setFeedback] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(firstQuestion || ""); // ✅ use prop directly
+  const [isLoading, setIsLoading] = useState(false);   
+const [seconds, setSeconds] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(firstQuestion || "");
   const [userAnswer, setUserAnswer] = useState("");
 
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
 
-  // ✅ speak first question when component mounts
+  const formatTime = (s) => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+const recognitionRef = React.useRef(null);
+
   useEffect(() => {
-    if (firstQuestion) {
-      speakText(firstQuestion);
-    }
+    if (firstQuestion) speakText(firstQuestion);
   }, []);
 
-  // ✅ speak whenever question changes
+
   useEffect(() => {
     if (currentQuestion && isInterviewActive) {
       speakText(currentQuestion);
+      setSeconds(0);  
     }
   }, [currentQuestion]);
+
+
+  useEffect(() => {
+    const t = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(t); 
+  }, []);  
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;       
+    recognition.interimResults = true;   
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event) => {
+      // collect ALL results, not just first one
+      let transcript = "";
+      for (let i = 0; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setUserAnswer(transcript);
+    };
+     recognition.onerror = (event) => {
+      console.error("Mic error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
 
   const speakText = (text) => {
     window.speechSynthesis.cancel();
@@ -53,29 +88,26 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
     }
   };
 
-  const startListening = () => {
-    if (!recognition) {
+ const startListening = () => {
+    if (!recognitionRef.current) {
       alert("Speech recognition not supported in your browser");
       return;
     }
-    setIsListening(true);
-    recognition.start();
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setUserAnswer(transcript);
-    };
-    recognition.onerror = (event) => {
-      console.error("Mic error:", event.error);
+
+    if (isListening) {
+      // if already listening → stop on second click
+      recognitionRef.current.stop();
       setIsListening(false);
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-    };
+    } else {
+      setUserAnswer("");  // clear previous answer
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
   };
 
   const handleEnd = async () => {
-    window.speechSynthesis.cancel();
-    if (recognition) recognition.stop();
+  window.speechSynthesis.cancel();
+    if (recognitionRef.current) recognitionRef.current.stop();
     setIsInterviewActive(false);
     try {
       setIsLoading(true);
@@ -151,6 +183,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
     <div className="is-screen">
       <div className="is-header">
         <h2>AI Interview</h2>
+        <span className="timer">{formatTime(seconds)}</span>
         <button onClick={handleEnd} className='is-btn-finish'>End Interview</button>
       </div>
       <div className="is-card">
@@ -164,12 +197,14 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
         className="is-input"
         style={{ width: "657px", height: "77px" }}
       />
+      <div class="btn-div" style={{display:"flex" , alignContent:"center" , justifyContent:"space-between"}}>
       <button onClick={startListening} className="mic-btn">
         {isListening ? "🎤 Listening..." : "🎤 Speak Answer"}
       </button>
       <button onClick={handleSubmitAnswer} className="is-btn">
         Submit Answer →
       </button>
+      </div>
     </div>
   );
 }
