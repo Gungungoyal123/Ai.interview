@@ -20,7 +20,7 @@ function Dashboard() {
   const fetchUsername = async () => {
     try {
       const token = localStorage.getItem("mytoken");
-      const res = await fetch("http://localhost:8000/user/profile", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -32,7 +32,7 @@ function Dashboard() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/user/api/feedbacks/${userId}`); // ✅ fixed
+     const res = await fetch(`${import.meta.env.VITE_API_URL}/user/api/feedbacks/${userId}`);
       const data = await res.json();
       if (res.ok) setFeedbacks(data.feedbacks);
     } catch (err) {

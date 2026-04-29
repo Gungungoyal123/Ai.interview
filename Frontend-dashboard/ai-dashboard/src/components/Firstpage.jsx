@@ -25,7 +25,7 @@ function FirstPage() {
       password: password,
     };
     try {
-      const response = await fetch("http://localhost:8000/user/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -57,7 +57,7 @@ function FirstPage() {
       password: password,
     };
     try {
-      const response = await fetch("http://localhost:8000/user/signup", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/user/signup`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
