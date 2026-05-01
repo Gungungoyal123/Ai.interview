@@ -1,4 +1,14 @@
-/* Loading */
+
+
+/* GLOBAL FIX */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 .is-loading-wrap {
   display: flex;
   flex-direction: column;
@@ -180,6 +190,7 @@
   margin-bottom: 20px;
 }
 
+
 /* Score Boxes */
 .score-row {
   display: flex;
@@ -312,4 +323,146 @@
   background: #1a1a2e;
   width: 20px;
   border-radius: 4px;
+}
+
+/* Screen */
+.is-screen {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.is-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.timer {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Card */
+.is-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 32px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Textarea */
+.is-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: none;
+}
+
+/* Button Container */
+.btn-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Buttons */
+.mic-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ff6b6b;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+}
+
+.is-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #6c63ff;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+}
+
+.is-btn-finish {
+  background: #1ec99b;
+  color: white;
+  width: 120px;
+  height: 35px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* Feedback */
+.feedback-card {
+  width: 600px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+}
+
+/* ========================= */
+/* 📱 MOBILE RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  .feedback-container {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .feedback-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  /* ✅ FIX: stack score cards */
+  .score-row {
+    flex-direction: column;
+  }
+
+  .score-box {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .feedback-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .feedback-section h3 {
+    font-size: 16px;
+  }
+
+  .feedback-section li {
+    font-size: 14px;
+  }
+
+  .verdict-box {
+    padding: 14px;
+  }
+
+  .back-btn {
+    width: 100%;
+  }
 }

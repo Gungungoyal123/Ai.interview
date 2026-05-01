@@ -20,12 +20,21 @@ const recognitionRef = React.useRef(null);
   }, []);
 
 
-  useEffect(() => {
-    if (currentQuestion && isInterviewActive) {
-      speakText(currentQuestion);
-      setSeconds(0);  
+useEffect(() => {
+  if (currentQuestion && isInterviewActive) {
+    speakText(currentQuestion);
+    setSeconds(0);
+
+    // ✅ CLEAR OLD ANSWER HERE ALSO
+    setUserAnswer("");
+
+    // ✅ STOP MIC just in case
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
-  }, [currentQuestion]);
+    setIsListening(false);
+  }
+}, [currentQuestion]);
 
 
   useEffect(() => {
@@ -33,34 +42,51 @@ const recognitionRef = React.useRef(null);
     return () => clearInterval(t); 
   }, []);  
 
-  useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+useEffect(() => {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;       
-    recognition.interimResults = true;   
-    recognition.lang = "en-US";
+  if (!SpeechRecognition) return;
 
-    recognition.onresult = (event) => {
-      // collect ALL results, not just first one
-      let transcript = "";
-      for (let i = 0; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-      setUserAnswer(transcript);
-    };
-     recognition.onerror = (event) => {
-      console.error("Mic error:", event.error);
-      setIsListening(false);
-    };
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = "en-US";
 
-    recognition.onend = () => {
-      setIsListening(false);
-    };
+ recognition.onresult = (event) => {
+  let finalTranscript = "";
+  let interimTranscript = "";
 
-    recognitionRef.current = recognition;
-  }, []);
+  for (let i = 0; i < event.results.length; i++) {
+    const transcript = event.results[i][0].transcript;
+
+    if (event.results[i].isFinal) {
+      finalTranscript += transcript;   // ✅ stable text
+    } else {
+      interimTranscript += transcript; // ✅ live typing effect
+    }
+  }
+
+  // ✅ Combine both properly (NO duplication)
+  setUserAnswer(finalTranscript + interimTranscript);
+};
+
+  recognition.onerror = (event) => {
+    console.error("Mic error:", event.error);
+    setIsListening(false);
+  };
+
+  recognition.onend = () => {
+    setIsListening(false);
+  };
+
+  recognitionRef.current = recognition;
+
+  // ✅ CLEANUP (very important)
+  return () => {
+    recognition.stop();
+  };
+}, []);
 
   const speakText = (text) => {
     window.speechSynthesis.cancel();
@@ -71,39 +97,65 @@ const recognitionRef = React.useRef(null);
     window.speechSynthesis.speak(speech);
   };
 
+  // const handleSubmitAnswer = async () => {
+  //   if (!userAnswer || !isInterviewActive) return;
+  //   try {
+  //     const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
+  //       sessionid: sessionId,
+  //       useranswer: userAnswer
+  //     });
+  //     setCurrentQuestion(res.data.interviewanswer);
+  //     setUserAnswer("");
+  //     if (res.data.isComplete) {
+  //       handleEnd();
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Chat error:", err);
+  //   }
+  // };
+
   const handleSubmitAnswer = async () => {
-    if (!userAnswer || !isInterviewActive) return;
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
-        sessionid: sessionId,
-        useranswer: userAnswer
-      });
-      setCurrentQuestion(res.data.interviewanswer);
-      setUserAnswer("");
-      if (res.data.isComplete) {
-        handleEnd();
-      }
-    } catch (err) {
-      console.error("❌ Chat error:", err);
-    }
-  };
+  if (!userAnswer || !isInterviewActive) return;
 
- const startListening = () => {
-    if (!recognitionRef.current) {
-      alert("Speech recognition not supported in your browser");
-      return;
-    }
+  // ✅ STOP mic before sending
+  if (recognitionRef.current) {
+    recognitionRef.current.stop();
+  }
+  setIsListening(false);
 
-    if (isListening) {
-      // if already listening → stop on second click
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      setUserAnswer("");  // clear previous answer
-      recognitionRef.current.start();
-      setIsListening(true);
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
+      sessionid: sessionId,
+      useranswer: userAnswer
+    });
+
+    setCurrentQuestion(res.data.interviewanswer);
+
+    // ✅ CLEAR OLD ANSWER (IMPORTANT)
+    setUserAnswer("");
+
+    if (res.data.isComplete) {
+      handleEnd();
     }
-  };
+  } catch (err) {
+    console.error("❌ Chat error:", err);
+  }
+};
+
+const startListening = () => {
+  if (!recognitionRef.current) {
+    alert("Speech recognition not supported");
+    return;
+  }
+
+  if (isListening) {
+    recognitionRef.current.stop();
+    setIsListening(false);
+  } else {
+    recognitionRef.current.start();
+    setIsListening(true);
+  }
+};
 
   const handleEnd = async () => {
   window.speechSynthesis.cancel();
@@ -195,9 +247,8 @@ const recognitionRef = React.useRef(null);
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)}
         className="is-input"
-        style={{ width: "657px", height: "77px" }}
       />
-      <div class="btn-div" style={{display:"flex" , alignContent:"center" , justifyContent:"space-between"}}>
+      <div class="btn-div">
       <button onClick={startListening} className="mic-btn">
         {isListening ? "🎤 Listening..." : "🎤 Speak Answer"}
       </button>
