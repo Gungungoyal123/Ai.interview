@@ -27,3 +27,22 @@ body {
   gap: 16px;
   overflow-y: auto;
 }
+.app-layout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+  }
+
+  .main-area {
+    padding: 12px;
+    width: 100%;
+  }
+}
