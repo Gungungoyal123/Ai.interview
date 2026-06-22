@@ -1,3 +1,5 @@
+
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './first.css'
@@ -35,7 +37,7 @@ function FirstPage() {
       const data = await response?.json();
       if (response.ok) {
         localStorage.setItem("mytoken", data.token);
-        localStorage.setItem("userId", data.userId); // ✅ save userId
+        localStorage.setItem("userId", data.userId); // save userId
         console.log("login successful");
         setMessage("Login successful");
         setIsError(false);
@@ -67,9 +69,9 @@ function FirstPage() {
       const data = await response.json();
       if (response.ok) {
         console.log("successful signup");
-        setMessage("Signup successful! Please login."); // ✅ show success message
+        setMessage("Signup successful! Please login.");
         setIsError(false);
-        setIsLogin(true); // ✅ auto switch to login
+        setIsLogin(true);
       } else {
         console.log("unsuccessful signup");
         setMessage(data.message);
@@ -83,55 +85,54 @@ function FirstPage() {
   };
 
   return (
-<div className="auth-container">
+    <div className="auth-container">
 
-  {/* LEFT SIDE */}
-  <div className="auth-left">
-    <div className="left-content">
-      <h1>🚀 IntervAI</h1>
-      <h2>Practice Smarter. Crack Interviews.</h2>
-      <p>
-        AI-powered mock interviews with real-time feedback,
-        voice analysis, and personalized improvement tips.
-      </p>
+      {/* LEFT SIDE */}
+      <div className="auth-left">
+        <div className="left-content">
+          <h1>IntervAI</h1>
+          <h2>Practice smarter. Walk in ready.</h2>
+          <p>
+            AI-powered mock interviews with real-time feedback,
+            voice analysis, and personalized improvement tips.
+          </p>
 
-      <div className="features">
-        <p>🎤 Voice-based interviews</p>
-        <p>📊 Instant feedback</p>
-        <p>🧠 AI suggestions</p>
+          <div className="features">
+            <p>Voice-based interviews</p>
+            <p>Instant feedback</p>
+            <p>AI suggestions</p>
+          </div>
+        </div>
       </div>
+
+      {/* RIGHT SIDE */}
+      <div className="auth-right">
+        <div className="auth-card">
+          <h2>{isLogin ? "Welcome back" : "Create your account"}</h2>
+
+          <input placeholder="Email" onChange={handlemail} />
+          <input placeholder="Password" type="password" onChange={handlepassword} />
+
+          {!isLogin && <input placeholder="Confirm Password" />}
+
+          <button onClick={isLogin ? handlelogin : handlesignup}>
+            {isLogin ? "Log in" : "Sign up"}
+          </button>
+
+          {message && (
+            <p className={isError ? "error" : "success"}>{message}</p>
+          )}
+
+          <p className="toggle" onClick={() => setIsLogin(!isLogin)}>
+            {isLogin
+              ? "Don't have an account? Sign up"
+              : "Already have an account? Log in"}
+          </p>
+        </div>
+      </div>
+
     </div>
-  </div>
-
-  {/* RIGHT SIDE */}
-  <div className="auth-right">
-    <div className="auth-card">
-      <h2>{isLogin ? "Login" : "Sign Up"}</h2>
-
-      <input placeholder="Email" onChange={handlemail} />
-      <input placeholder="Password" type="password" onChange={handlepassword} />
-
-      {!isLogin && <input placeholder="Confirm Password" />}
-
-      <button onClick={isLogin ? handlelogin : handlesignup}>
-        {isLogin ? "Login" : "Sign Up"}
-      </button>
-
-      {message && (
-        <p className={isError ? "error" : "success"}>{message}</p>
-      )}
-
-      <p className="toggle" onClick={() => setIsLogin(!isLogin)}>
-        {isLogin
-          ? "Don't have an account? Sign Up"
-          : "Already have an account? Login"}
-      </p>
-    </div>
-  </div>
-
-</div>
   );
 }
 
 export default FirstPage;
-

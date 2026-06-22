@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as React from "react";
 import './InterviewSession.css';
+
 function InterviewSession({ onEnd, sessionId, firstQuestion }) {
    const [isListening, setIsListening] = useState(false);
   const [isInterviewActive, setIsInterviewActive] = useState(true);
@@ -25,10 +26,10 @@ useEffect(() => {
     speakText(currentQuestion);
     setSeconds(0);
 
-    // ✅ CLEAR OLD ANSWER HERE ALSO
+    // CLEAR OLD ANSWER HERE ALSO
     setUserAnswer("");
 
-    // ✅ STOP MIC just in case
+    // STOP mic just in case
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
@@ -61,13 +62,13 @@ useEffect(() => {
     const transcript = event.results[i][0].transcript;
 
     if (event.results[i].isFinal) {
-      finalTranscript += transcript;   // ✅ stable text
+      finalTranscript += transcript;   // stable text
     } else {
-      interimTranscript += transcript; // ✅ live typing effect
+      interimTranscript += transcript; // live typing effect
     }
   }
 
-  // ✅ Combine both properly (NO duplication)
+  // Combine both properly (no duplication)
   setUserAnswer(finalTranscript + interimTranscript);
 };
 
@@ -82,7 +83,7 @@ useEffect(() => {
 
   recognitionRef.current = recognition;
 
-  // ✅ CLEANUP (very important)
+  // CLEANUP (very important)
   return () => {
     recognition.stop();
   };
@@ -97,27 +98,10 @@ useEffect(() => {
     window.speechSynthesis.speak(speech);
   };
 
-  // const handleSubmitAnswer = async () => {
-  //   if (!userAnswer || !isInterviewActive) return;
-  //   try {
-  //     const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
-  //       sessionid: sessionId,
-  //       useranswer: userAnswer
-  //     });
-  //     setCurrentQuestion(res.data.interviewanswer);
-  //     setUserAnswer("");
-  //     if (res.data.isComplete) {
-  //       handleEnd();
-  //     }
-  //   } catch (err) {
-  //     console.error("❌ Chat error:", err);
-  //   }
-  // };
-
   const handleSubmitAnswer = async () => {
   if (!userAnswer || !isInterviewActive) return;
 
-  // ✅ STOP mic before sending
+  // STOP mic before sending
   if (recognitionRef.current) {
     recognitionRef.current.stop();
   }
@@ -131,14 +115,14 @@ useEffect(() => {
 
     setCurrentQuestion(res.data.interviewanswer);
 
-    // ✅ CLEAR OLD ANSWER (IMPORTANT)
+    // CLEAR OLD ANSWER (important)
     setUserAnswer("");
 
     if (res.data.isComplete) {
       handleEnd();
     }
   } catch (err) {
-    console.error("❌ Chat error:", err);
+    console.error("Chat error:", err);
   }
 };
 
@@ -173,7 +157,7 @@ const startListening = () => {
       });
       setFeedback(res.data.feedback);
     } catch (err) {
-      console.error("❌ Feedback error:", err);
+      console.error("Feedback error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -192,7 +176,7 @@ const startListening = () => {
     return (
       <div className="feedback-container">
         <div className="feedback-card">
-          <h1 className="feedback-title">🎉 Interview Feedback</h1>
+          <h1 className="feedback-title">Interview Feedback</h1>
           <div className="score-row">
             <div className="score-box">
               <h3>{feedback.overallScore}</h3>
@@ -208,19 +192,19 @@ const startListening = () => {
             </div>
           </div>
           <div className="feedback-section">
-            <h3>💪 Strengths</h3>
+            <h3>Strengths</h3>
             <ul>
               {feedback.strengths?.map((s, i) => <li key={i}>{s}</li>)}
             </ul>
           </div>
           <div className="feedback-section">
-            <h3>⚠️ Areas to Improve</h3>
+            <h3>Areas to Improve</h3>
             <ul>
               {feedback.weaknesses?.map((w, i) => <li key={i}>{w}</li>)}
             </ul>
           </div>
           <div className="verdict-box">
-            <h3>📌 Verdict</h3>
+            <h3>Verdict</h3>
             <p>{feedback.verdict}</p>
           </div>
           <button className="back-btn" onClick={onEnd}>
@@ -248,9 +232,9 @@ const startListening = () => {
         onChange={(e) => setUserAnswer(e.target.value)}
         className="is-input"
       />
-      <div class="btn-div">
-      <button onClick={startListening} className="mic-btn">
-        {isListening ? "🎤 Listening..." : "🎤 Speak Answer"}
+      <div className="btn-div">
+      <button onClick={startListening} className={`mic-btn ${isListening ? 'mic-btn--active' : ''}`}>
+        {isListening ? "Listening..." : "Speak Answer"}
       </button>
       <button onClick={handleSubmitAnswer} className="is-btn">
         Submit Answer →

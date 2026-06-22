@@ -1,7 +1,7 @@
 import "./Sidebar.css";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const navItems = [{ label: "Dashboard", icon: "🏠", path: "/dashboard" }];
+const navItems = [{ label: "Dashboard", icon: "home", path: "/dashboard" }];
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -20,31 +20,29 @@ function Sidebar() {
     return quotes[today % quotes.length];
   };
   const dailyQuote = getDailyQuote();
+
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <div className="logo-icon">🤖</div>
+        <div className="logo-icon"></div>
         <span className="logo-text">AI Interview</span>
       </div>
 
       <nav className="sidebar-nav">
         {navItems.map((item) => (
-          <>
-            <div
-              key={item.label}
-              className={`nav-item ${location.pathname === item.path ? "nav-item--active" : ""}`}
-              onClick={() => navigate(item.path)}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              <span className="nav-label">{item.label}</span>
-            </div>
-
-            <div className="sidebar-motivation">
-              <p>💡 Tip of the Day</p>
-              <span>{dailyQuote}</span>
-            </div>
-          </>
+          <div
+            key={item.label}
+            className={`nav-item ${location.pathname === item.path ? "nav-item--active" : ""}`}
+            onClick={() => navigate(item.path)}
+          >
+            <span className="nav-label">{item.label}</span>
+          </div>
         ))}
+
+        <div className="sidebar-motivation">
+          <p>Tip of the day</p>
+          <span>{dailyQuote}</span>
+        </div>
       </nav>
     </aside>
   );

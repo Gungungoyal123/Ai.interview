@@ -16,8 +16,10 @@ function Header() {
         <h2 className="header-title">AI Interview Prep</h2>
       </div>
       <div className="header-right">
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
-        <div className="avatar">👤</div>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+        <div className="avatar"></div>
       </div>
     </header>
   )
