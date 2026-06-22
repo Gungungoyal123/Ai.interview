@@ -66,7 +66,7 @@ function Dashboard() {
     <div className="dashboard">
       <div className="welcome-row">
         <div>
-          <h1 className="welcome-text">Welcome back, {username} 👋</h1>
+          <h1 className="welcome-text">Welcome back, {username}</h1>
           <p className="welcome-sub">Ready for your next interview practice?</p>
         </div>
         <button className="start-btn" onClick={() => setIsInterviewActive(true)}>
@@ -75,9 +75,9 @@ function Dashboard() {
       </div>
 
       <div className="stats-row">
-        <StatsCard icon="🎯" label="Total Interviews" value={feedbacks.length || 0} />
-        <StatsCard icon="⭐" label="Average Score" value={`${avgScore}%`} valueColor="#1ec99b" />
-        <StatsCard icon="🏆" label="Last Verdict" value={feedbacks[0]?.verdict || "N/A"} />
+        <StatsCard label="Total Interviews" value={feedbacks.length || 0} />
+        <StatsCard label="Average Score" value={`${avgScore}%`} tone="good" />
+        <StatsCard label="Last Verdict" value={feedbacks[0]?.verdict || "N/A"} />
       </div>
 
       <RecentInterviews feedbacks={feedbacks} />

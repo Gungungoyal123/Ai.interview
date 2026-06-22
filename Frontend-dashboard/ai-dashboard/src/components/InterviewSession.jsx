@@ -1,31 +1,93 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as React from "react";
 import './InterviewSession.css';
 
 function InterviewSession({ onEnd, sessionId, firstQuestion }) {
-  const [isListening, setIsListening] = useState(false);
+   const [isListening, setIsListening] = useState(false);
   const [isInterviewActive, setIsInterviewActive] = useState(true);
   const [feedback, setFeedback] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(firstQuestion || ""); // ✅ use prop directly
+  const [isLoading, setIsLoading] = useState(false);   
+const [seconds, setSeconds] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(firstQuestion || "");
   const [userAnswer, setUserAnswer] = useState("");
 
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
 
-  // ✅ speak first question when component mounts
+  const formatTime = (s) => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+const recognitionRef = React.useRef(null);
+
   useEffect(() => {
-    if (firstQuestion) {
-      speakText(firstQuestion);
-    }
+    if (firstQuestion) speakText(firstQuestion);
   }, []);
 
-  // ✅ speak whenever question changes
-  useEffect(() => {
-    if (currentQuestion && isInterviewActive) {
-      speakText(currentQuestion);
+
+useEffect(() => {
+  if (currentQuestion && isInterviewActive) {
+    speakText(currentQuestion);
+    setSeconds(0);
+
+    // CLEAR OLD ANSWER HERE ALSO
+    setUserAnswer("");
+
+    // STOP mic just in case
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
-  }, [currentQuestion]);
+    setIsListening(false);
+  }
+}, [currentQuestion]);
+
+
+  useEffect(() => {
+    const t = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(t); 
+  }, []);  
+
+useEffect(() => {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) return;
+
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = "en-US";
+
+ recognition.onresult = (event) => {
+  let finalTranscript = "";
+  let interimTranscript = "";
+
+  for (let i = 0; i < event.results.length; i++) {
+    const transcript = event.results[i][0].transcript;
+
+    if (event.results[i].isFinal) {
+      finalTranscript += transcript;   // stable text
+    } else {
+      interimTranscript += transcript; // live typing effect
+    }
+  }
+
+  // Combine both properly (no duplication)
+  setUserAnswer(finalTranscript + interimTranscript);
+};
+
+  recognition.onerror = (event) => {
+    console.error("Mic error:", event.error);
+    setIsListening(false);
+  };
+
+  recognition.onend = () => {
+    setIsListening(false);
+  };
+
+  recognitionRef.current = recognition;
+
+  // CLEANUP (very important)
+  return () => {
+    recognition.stop();
+  };
+}, []);
 
   const speakText = (text) => {
     window.speechSynthesis.cancel();
@@ -37,45 +99,51 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
   };
 
   const handleSubmitAnswer = async () => {
-    if (!userAnswer || !isInterviewActive) return;
-    try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
-        sessionid: sessionId,
-        useranswer: userAnswer
-      });
-      setCurrentQuestion(res.data.interviewanswer);
-      setUserAnswer("");
-      if (res.data.isComplete) {
-        handleEnd();
-      }
-    } catch (err) {
-      console.error("❌ Chat error:", err);
-    }
-  };
+  if (!userAnswer || !isInterviewActive) return;
 
-  const startListening = () => {
-    if (!recognition) {
-      alert("Speech recognition not supported in your browser");
-      return;
+  // STOP mic before sending
+  if (recognitionRef.current) {
+    recognitionRef.current.stop();
+  }
+  setIsListening(false);
+
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
+      sessionid: sessionId,
+      useranswer: userAnswer
+    });
+
+    setCurrentQuestion(res.data.interviewanswer);
+
+    // CLEAR OLD ANSWER (important)
+    setUserAnswer("");
+
+    if (res.data.isComplete) {
+      handleEnd();
     }
+  } catch (err) {
+    console.error("Chat error:", err);
+  }
+};
+
+const startListening = () => {
+  if (!recognitionRef.current) {
+    alert("Speech recognition not supported");
+    return;
+  }
+
+  if (isListening) {
+    recognitionRef.current.stop();
+    setIsListening(false);
+  } else {
+    recognitionRef.current.start();
     setIsListening(true);
-    recognition.start();
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setUserAnswer(transcript);
-    };
-    recognition.onerror = (event) => {
-      console.error("Mic error:", event.error);
-      setIsListening(false);
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-  };
+  }
+};
 
   const handleEnd = async () => {
-    window.speechSynthesis.cancel();
-    if (recognition) recognition.stop();
+  window.speechSynthesis.cancel();
+    if (recognitionRef.current) recognitionRef.current.stop();
     setIsInterviewActive(false);
     try {
       setIsLoading(true);
@@ -89,7 +157,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
       });
       setFeedback(res.data.feedback);
     } catch (err) {
-      console.error("❌ Feedback error:", err);
+      console.error("Feedback error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -108,7 +176,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
     return (
       <div className="feedback-container">
         <div className="feedback-card">
-          <h1 className="feedback-title">🎉 Interview Feedback</h1>
+          <h1 className="feedback-title">Interview Feedback</h1>
           <div className="score-row">
             <div className="score-box">
               <h3>{feedback.overallScore}</h3>
@@ -124,19 +192,19 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
             </div>
           </div>
           <div className="feedback-section">
-            <h3>💪 Strengths</h3>
+            <h3>Strengths</h3>
             <ul>
               {feedback.strengths?.map((s, i) => <li key={i}>{s}</li>)}
             </ul>
           </div>
           <div className="feedback-section">
-            <h3>⚠️ Areas to Improve</h3>
+            <h3>Areas to Improve</h3>
             <ul>
               {feedback.weaknesses?.map((w, i) => <li key={i}>{w}</li>)}
             </ul>
           </div>
           <div className="verdict-box">
-            <h3>📌 Verdict</h3>
+            <h3>Verdict</h3>
             <p>{feedback.verdict}</p>
           </div>
           <button className="back-btn" onClick={onEnd}>
@@ -151,6 +219,7 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
     <div className="is-screen">
       <div className="is-header">
         <h2>AI Interview</h2>
+        <span className="timer">{formatTime(seconds)}</span>
         <button onClick={handleEnd} className='is-btn-finish'>End Interview</button>
       </div>
       <div className="is-card">
@@ -162,14 +231,15 @@ function InterviewSession({ onEnd, sessionId, firstQuestion }) {
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)}
         className="is-input"
-        style={{ width: "657px", height: "77px" }}
       />
-      <button onClick={startListening} className="mic-btn">
-        {isListening ? "🎤 Listening..." : "🎤 Speak Answer"}
+      <div className="btn-div">
+      <button onClick={startListening} className={`mic-btn ${isListening ? 'mic-btn--active' : ''}`}>
+        {isListening ? "Listening..." : "Speak Answer"}
       </button>
       <button onClick={handleSubmitAnswer} className="is-btn">
         Submit Answer →
       </button>
+      </div>
     </div>
   );
 }

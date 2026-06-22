@@ -1,12 +1,11 @@
 import './StatsCard.css'
 
-function StatsCard({ icon, label, value, valueColor }) {
+function StatsCard({ label, value, tone }) {
   return (
     <div className="stats-card">
-      <div className="stats-icon">{icon}</div>
       <div className="stats-info">
         <p className="stats-label">{label}</p>
-        <p className="stats-value" style={{ color: valueColor || '#1e2d4a' }}>
+        <p className={`stats-value ${tone ? `stats-value--${tone}` : ''}`}>
           {value}
         </p>
       </div>
