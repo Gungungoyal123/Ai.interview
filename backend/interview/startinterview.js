@@ -46,7 +46,7 @@ Rules you MUST follow:
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: conversationhistory.map((msg) => ({
-        // ✅ fixed
+        
         role: msg.role,
         content: msg.content,
       })),

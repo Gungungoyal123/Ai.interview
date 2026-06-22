@@ -5,8 +5,7 @@ import { Feedback } from "../models/feedbackmodel.js";
 export const generateFeedback = async (req, res) => {
   try {
     
-    const { sessionId, voiceAnalysis } = req.body; // ✅ removed userId
-
+    const { sessionId, voiceAnalysis } = req.body; 
     if (!sessionId) {
       return res.status(400).json({ success: false, message: "Missing sessionId" });
     }
@@ -73,7 +72,7 @@ JSON format:
     const jsonEnd = text.lastIndexOf("}");
     const feedbackData = JSON.parse(text.slice(jsonStart, jsonEnd + 1));
 
-    // ✅ get userId from session itself — no need to send from frontend
+  
     const feedback = await Feedback.create({
       userId: session.userId,
       sessionId,

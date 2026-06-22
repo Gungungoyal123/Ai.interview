@@ -34,7 +34,7 @@ app.use(express.json());
 connectdb();
 app.use('/user', userRouter);
 app.use("/api/voice", voiceRouter);
-console.log("API KEY:", process.env.ELEVENLABS_API_KEY);
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
