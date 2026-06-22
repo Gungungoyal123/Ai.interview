@@ -1,7 +1,7 @@
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: 220px;
-  background: #1e2d4a;
+  background: #2b2520;
   border-radius: 16px;
   padding: 24px 12px;
   display: flex;
@@ -20,7 +20,7 @@
 
 .logo-icon {
   font-size: 28px;
-  background: #2e7df7;
+  background: #b15a32;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -51,7 +51,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s;
-  color: #a0aec0;
+  color: #a99d8d;
 }
 
 .nav-item:hover {
@@ -60,7 +60,7 @@
 }
 
 .nav-item--active {
-  background: #2e7df7;
+  background: #b15a32;
   color: #ffffff;
 }
 

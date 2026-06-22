@@ -12,7 +12,7 @@
 
 .stats-icon {
   font-size: 28px;
-  background: #eef3ff;
+  background: #f3e3d6;
   border-radius: 12px;
   width: 48px;
   height: 48px;
@@ -32,7 +32,7 @@
 .stats-value {
   font-size: 22px; /* ✅ smaller so verdict fits */
   font-weight: 700;
-  color: #1e2d4a;
+  color: #2b2520;
   word-break: break-word; /* ✅ prevents overflow */
   line-height: 1.3;
 }
