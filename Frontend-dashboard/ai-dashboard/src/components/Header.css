@@ -12,7 +12,7 @@
 .header-title {
   font-size: 18px;
   font-weight: 600;
-  color: #1e2d4a;
+  color: #2b2520;
   margin: 0;
 }
 
@@ -40,7 +40,7 @@
 .avatar {
   width: 36px;
   height: 36px;
-  background: #eef3ff;
+  background: #f3e3d6;
   border-radius: 50%;
   display: flex;
   align-items: center;

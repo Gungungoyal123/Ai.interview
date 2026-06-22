@@ -8,7 +8,7 @@
 .recent-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1e2d4a;
+  color: #2b2520;
   margin-bottom: 16px;
 }
 
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f7faff;
+  background: #f6f1e7;
   border-radius: 12px;
   padding: 12px 16px;
 }
@@ -36,7 +36,7 @@
 .recent-label {
   font-size: 14px;
   font-weight: 600;
-  color: #1e2d4a;
+  color: #2b2520;
   margin: 0;
   text-transform: capitalize;
 }

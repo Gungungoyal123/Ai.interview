@@ -18,7 +18,7 @@
 .welcome-text {
   font-size: 22px;
   font-weight: 700;
-  color: #1e2d4a;
+  color: #2b2520;
   margin: 0;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .start-btn {
-  background: linear-gradient(135deg, #2e7df7, #1a6be0);
+  background: linear-gradient(135deg, #b15a32, #8f4424);
   color: white;
   border: none;
   border-radius: 30px;

@@ -11,7 +11,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px 20px;
-  border-bottom: 1px solid #f0f4f8;
+  border-bottom: 1px solid #f6f1e7;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -21,7 +21,7 @@
 }
 
 .interview-row:hover {
-  background: #f7faff;
+  background: #f6f1e7;
 }
 
 .interview-icon {
@@ -39,7 +39,7 @@
   flex: 1;
   font-size: 15px;
   font-weight: 500;
-  color: #1e2d4a;
+  color: #2b2520;
 }
 
 .interview-score {
