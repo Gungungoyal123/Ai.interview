@@ -30,7 +30,7 @@ router.post("/speak", async (req, res) => {
     res.send(response.data);
 
   } catch (error) {
-    console.error("❌ Voice error full:", {
+    console.error(" Voice error full:", {
   status: error.response?.status,
   data: error.response?.data,
   message: error.message
