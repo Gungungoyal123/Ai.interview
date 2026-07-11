@@ -107,9 +107,7 @@ body {
   color: green;
 }
 
-/* ========================= */
-/* 📱 MOBILE RESPONSIVE */
-/* ========================= */
+
 
 @media (max-width: 768px) {
 
@@ -154,7 +152,7 @@ body {
     max-width: 100%;
     padding: 20px;
     border-radius: 16px;
-    margin-top: -8px; /* 🔥 overlap effect */
+    margin-top: -8px; 
   }
 
   .auth-card h2 {
@@ -164,7 +162,7 @@ body {
   /* Inputs */
   .auth-card input {
     padding: 14px;
-    font-size: 16px; /* prevents zoom */
+    font-size: 16px; 
   }
 
   /* Button */

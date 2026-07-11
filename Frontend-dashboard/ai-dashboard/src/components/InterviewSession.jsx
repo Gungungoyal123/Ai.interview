@@ -25,10 +25,10 @@ useEffect(() => {
     speakText(currentQuestion);
     setSeconds(0);
 
-    // ✅ CLEAR OLD ANSWER HERE ALSO
+ 
     setUserAnswer("");
 
-    // ✅ STOP MIC just in case
+  
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
@@ -61,13 +61,13 @@ useEffect(() => {
     const transcript = event.results[i][0].transcript;
 
     if (event.results[i].isFinal) {
-      finalTranscript += transcript;   // ✅ stable text
+      finalTranscript += transcript;   
     } else {
-      interimTranscript += transcript; // ✅ live typing effect
+      interimTranscript += transcript; 
     }
   }
 
-  // ✅ Combine both properly (NO duplication)
+ 
   setUserAnswer(finalTranscript + interimTranscript);
 };
 
@@ -82,7 +82,7 @@ useEffect(() => {
 
   recognitionRef.current = recognition;
 
-  // ✅ CLEANUP (very important)
+ 
   return () => {
     recognition.stop();
   };
@@ -97,27 +97,12 @@ useEffect(() => {
     window.speechSynthesis.speak(speech);
   };
 
-  // const handleSubmitAnswer = async () => {
-  //   if (!userAnswer || !isInterviewActive) return;
-  //   try {
-  //     const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/api/chat`, {
-  //       sessionid: sessionId,
-  //       useranswer: userAnswer
-  //     });
-  //     setCurrentQuestion(res.data.interviewanswer);
-  //     setUserAnswer("");
-  //     if (res.data.isComplete) {
-  //       handleEnd();
-  //     }
-  //   } catch (err) {
-  //     console.error("❌ Chat error:", err);
-  //   }
-  // };
+
 
   const handleSubmitAnswer = async () => {
   if (!userAnswer || !isInterviewActive) return;
 
-  // ✅ STOP mic before sending
+
   if (recognitionRef.current) {
     recognitionRef.current.stop();
   }
@@ -131,14 +116,14 @@ useEffect(() => {
 
     setCurrentQuestion(res.data.interviewanswer);
 
-    // ✅ CLEAR OLD ANSWER (IMPORTANT)
+   
     setUserAnswer("");
 
     if (res.data.isComplete) {
       handleEnd();
     }
   } catch (err) {
-    console.error("❌ Chat error:", err);
+    console.error("Chat error:", err);
   }
 };
 
@@ -173,7 +158,7 @@ const startListening = () => {
       });
       setFeedback(res.data.feedback);
     } catch (err) {
-      console.error("❌ Feedback error:", err);
+      console.error("Feedback error:", err);
     } finally {
       setIsLoading(false);
     }

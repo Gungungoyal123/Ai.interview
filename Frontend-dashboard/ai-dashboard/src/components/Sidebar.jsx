@@ -1,7 +1,20 @@
 import "./Sidebar.css";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Form from "./Interview_Exp_Form";
 
-const navItems = [{ label: "Dashboard", icon: "🏠", path: "/dashboard" }];
+const navItems = [
+  {
+    label: "Dashboard",
+    icon: "🏠",
+    path: "/dashboard",
+  },
+  {
+    label: "Interview Hub",
+    icon: "💼",
+    path: "/share-interview-experience",
+  },
+];
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -38,14 +51,14 @@ function Sidebar() {
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
             </div>
-
-            <div className="sidebar-motivation">
+          </>
+        ))}
+         <div className="sidebar-motivation">
               <p>💡 Tip of the Day</p>
               <span>{dailyQuote}</span>
             </div>
-          </>
-        ))}
       </nav>
+      
     </aside>
   );
 }

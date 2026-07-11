@@ -12,10 +12,6 @@ function Dashboard() {
   const [feedbacks, setFeedbacks] = useState([]);
   const userId = localStorage.getItem("userId");
 
-  useEffect(() => {
-    fetchUsername();
-    fetchFeedbacks();
-  }, []);
 
   const fetchUsername = async () => {
     try {
@@ -40,6 +36,11 @@ function Dashboard() {
     }
   };
 
+  useEffect(() => {
+    fetchUsername();
+    fetchFeedbacks();
+  }, []);
+  
   const avgScore = feedbacks.length > 0
     ? Math.round(feedbacks.reduce((sum, f) => sum + f.overallScore, 0) / feedbacks.length)
     : 0;
@@ -47,7 +48,7 @@ function Dashboard() {
   if (isInterviewActive && !sessionData) {
     return <UserForm onStart={(data) => setSessionData(data)} />;
   }
-
+ 
   if (sessionData) {
     return (
       <InterviewSession
